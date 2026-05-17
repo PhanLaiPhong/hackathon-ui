@@ -3,48 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackathon Management System</title>
+    <title>Techathon 2026 - Management Portal</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome cho Icon -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { min-height: 100vh; display: flex; background-color: #f8f9fa; }
-        .sidebar { width: 280px; background-color: #fff; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
-        .main-content { flex-grow: 1; padding: 2rem; overflow-y: auto; height: 100vh; }
-        .nav-link.active { background-color: #0d6efd; color: white !important; }
-        .nav-link { color: #333; cursor: pointer; }
-        .section-content { display: none; }
-        .section-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #858796;
+            --sidebar-bg: #1a1c23;
+            --sidebar-hover: #2c2f3f;
+            --bg-light: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Tùy chỉnh thanh cuộn */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            transition: all 0.3s;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+        }
+        .sidebar-brand {
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.2);
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: var(--sidebar-hover);
+            border-left: 4px solid var(--primary-color);
+        }
+        .sidebar .nav-link i { width: 25px; }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 280px;
+            padding: 2rem 3rem;
+        }
+
+        /* THẺ CARD VÀ BÓNG (SHADOWS) */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* BANNER DASHBOARD */
+        .hero-banner {
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(78, 115, 223, 0.2);
+        }
+
+        /* AVATAR & TABLE */
+        .avatar-sm {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .table > :not(caption) > * > * {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+        
+        /* HIỆU ỨNG CHUYỂN TRANG */
+        .section-content { display: none; opacity: 0; }
+        .section-content.active {
+            display: block;
+            animation: fadeInUp 0.4s ease forwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* FORM NÂNG CAO */
+        .form-floating > label { padding-left: 1.25rem; }
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            border: 1px solid #e3e6f0;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+            border-color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
 
     <!-- SIDEBAR -->
-    <div class="sidebar d-flex flex-column p-3">
-        <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-            <i class="fa-solid fa-code fs-3 me-2 text-primary"></i>
-            <span class="fs-4 fw-bold">Hackathon 2026</span>
+    <div class="sidebar d-flex flex-column">
+        <a href="#" class="sidebar-brand mb-3">
+            <i class="fa-solid fa-laptop-code text-primary me-2"></i>
+            Techathon<span class="text-primary">26</span>
         </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
+        <div class="px-4 mb-4 mt-2">
+            <p class="text-uppercase mb-1" style="font-size: 0.75rem; color: #a1a1a1; font-weight: 600;">Menu Quản Trị</p>
+        </div>
+        <ul class="nav flex-column mb-auto">
             <li class="nav-item">
                 <a class="nav-link active" onclick="switchTab('dashboard', this)">
-                    <i class="fa-solid fa-chart-line me-2"></i> Dashboard
+                    <i class="fa-solid fa-chart-pie"></i> Bảng điều khiển
                 </a>
             </li>
-            <li>
+            <li class="nav-item">
                 <a class="nav-link" onclick="switchTab('lists', this)">
-                    <i class="fa-solid fa-users me-2"></i> Danh sách nhân sự
+                    <i class="fa-solid fa-users"></i> Quản lý nhân sự
                 </a>
             </li>
-            <li>
+            <li class="nav-item">
                 <a class="nav-link" onclick="switchTab('register', this)">
-                    <i class="fa-solid fa-user-plus me-2"></i> Đăng ký tham gia
+                    <i class="fa-solid fa-address-card"></i> Ghi danh tham dự
                 </a>
             </li>
         </ul>
+        
+        <!-- User Profile góc dưới -->
+        <div class="mt-auto p-4 bg-dark d-flex align-items-center">
+            <img src="https://ui-avatars.com/api/?name=Admin&background=4e73df&color=fff" alt="Admin" class="avatar-sm me-3">
+            <div>
+                <h6 class="mb-0 text-white fs-6">Admin Portal</h6>
+                <small class="text-muted">Online</small>
+            </div>
+        </div>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -52,116 +181,199 @@
         
         <!-- 1. DASHBOARD SECTION -->
         <div id="dashboard" class="section-content active">
-            <h2 class="mb-4">Tổng quan sự kiện</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card text-white bg-primary h-100 shadow-sm border-0">
-                        <div class="card-body">
-                            <h5 class="card-title">Tổng số thí sinh</h5>
-                            <p class="display-5 fw-bold mb-0">128</p>
+            <!-- Hero Banner -->
+            <div class="hero-banner d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h2 class="fw-bold mb-2">Cuộc thi Techathon & Sáng tạo Số 2026</h2>
+                    <p class="mb-0 text-light opacity-75"><i class="fa-solid fa-location-dot me-2"></i>Campus TP. Hồ Chí Minh | Vòng Chung kết: 25/08/2026</p>
+                </div>
+                <button class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill" onclick="document.querySelectorAll('.nav-link')[2].click()">
+                    Mở cổng đăng ký <i class="fa-solid fa-arrow-right ms-1"></i>
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card h-100 border-start border-4 border-primary">
+                        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-xs fw-bold text-primary text-uppercase mb-1">Tổng Thí Sinh</div>
+                                <div class="h3 mb-0 fw-bold text-gray-800">128</div>
+                            </div>
+                            <i class="fa-solid fa-user-astronaut fa-2x text-gray-300" style="color: #dddfeb;"></i>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-white bg-success h-100 shadow-sm border-0">
-                        <div class="card-body">
-                            <h5 class="card-title">Giám khảo</h5>
-                            <p class="display-5 fw-bold mb-0">12</p>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card h-100 border-start border-4 border-success">
+                        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-xs fw-bold text-success text-uppercase mb-1">Dự án đã nộp</div>
+                                <div class="h3 mb-0 fw-bold text-gray-800">34</div>
+                            </div>
+                            <i class="fa-solid fa-code-pull-request fa-2x text-gray-300" style="color: #dddfeb;"></i>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-white bg-warning h-100 shadow-sm border-0">
-                        <div class="card-body">
-                            <h5 class="card-title">Người cố vấn (Mentors)</h5>
-                            <p class="display-5 fw-bold mb-0">25</p>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card h-100 border-start border-4 border-warning">
+                        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-xs fw-bold text-warning text-uppercase mb-1">Cố vấn / Giám khảo</div>
+                                <div class="h3 mb-0 fw-bold text-gray-800">37</div>
+                            </div>
+                            <i class="fa-solid fa-chalkboard-user fa-2x text-gray-300" style="color: #dddfeb;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card h-100 border-start border-4 border-info">
+                        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-xs fw-bold text-info text-uppercase mb-1">Thời gian còn lại</div>
+                                <div class="h3 mb-0 fw-bold text-gray-800">14 Ngày</div>
+                            </div>
+                            <i class="fa-solid fa-clock fa-2x text-gray-300" style="color: #dddfeb;"></i>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="card mt-4 shadow-sm border-0">
-                <div class="card-header bg-white fw-bold">Thông báo mới</div>
-                <div class="card-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cuộc thi sẽ chính thức đóng cổng đăng ký vào cuối tuần này.</li>
-                        <li class="list-group-item">Cập nhật luật thi đấu vòng chung kết trên Discord.</li>
-                    </ul>
+            <!-- Timeline & Activity -->
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="card h-100">
+                        <div class="card-header bg-white py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 fw-bold text-primary">Tiến độ sự kiện</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="progress mb-4" style="height: 20px; border-radius: 10px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 60%">Giai đoạn Coding (60%)</div>
+                            </div>
+                            <hr>
+                            <h6 class="fw-bold mb-3">Lịch trình sắp tới:</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-0 border-0 d-flex align-items-center">
+                                    <span class="badge bg-danger me-3 p-2">Deadline</span> Nộp mã nguồn lên GitHub (Chủ nhật tuần này)
+                                </li>
+                                <li class="list-group-item px-0 border-0 d-flex align-items-center">
+                                    <span class="badge bg-info me-3 p-2">Workshop</span> Cách thuyết trình dự án trước Investor
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- 2. DANH SÁCH SECTION -->
         <div id="lists" class="section-content">
-            <h2 class="mb-4">Danh sách nhân sự</h2>
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#participants" type="button">Thí sinh</button>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold mb-0 text-gray-800">Quản lý Nhân sự</h2>
+                <button class="btn btn-outline-primary"><i class="fa-solid fa-download me-1"></i> Xuất Excel</button>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-white py-3 border-bottom-0 pt-4">
+                    <!-- Nav tabs modern -->
+                    <ul class="nav nav-pills" id="myTab" role="tablist">
+                        <li class="nav-item me-2" role="presentation">
+                            <button class="nav-link active rounded-pill px-4" data-bs-toggle="tab" data-bs-target="#participants" type="button">Thí sinh nòng cốt</button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#judges" type="button">Giám khảo</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mentors" type="button">Cố vấn</button>
+                        <li class="nav-item me-2" role="presentation">
+                            <button class="nav-link rounded-pill px-4" data-bs-toggle="tab" data-bs-target="#mentors" type="button">Ban Cố Vấn (Mentors)</button>
                         </li>
                     </ul>
-
-                    <!-- Tab panes -->
+                </div>
+                
+                <div class="card-body p-0">
                     <div class="tab-content">
                         <!-- Bảng Thí sinh -->
                         <div class="tab-pane fade show active" id="participants">
-                            <table class="table table-hover mt-3">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Họ và Tên</th>
-                                        <th>Nhóm (Team)</th>
-                                        <th>Vai trò (Kỹ năng)</th>
-                                        <th>Trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td>TS001</td><td>Nguyễn Văn A</td><td>CodeCrafters</td><td>Full-stack</td><td><span class="badge bg-success">Đã duyệt</span></td></tr>
-                                    <tr><td>TS002</td><td>Trần Thị B</td><td>CodeCrafters</td><td>UI/UX</td><td><span class="badge bg-success">Đã duyệt</span></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <!-- Bảng Giám khảo -->
-                        <div class="tab-pane fade" id="judges">
-                            <table class="table table-hover mt-3">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Họ và Tên</th>
-                                        <th>Đơn vị công tác</th>
-                                        <th>Chuyên môn</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td>GK01</td><td>Lê Hoàng C</td><td>Tech Corp</td><td>System Architecture</td></tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="ps-4">Thí sinh</th>
+                                            <th>Nhóm (Team)</th>
+                                            <th>Chuyên môn (Tech Stack)</th>
+                                            <th>Trạng thái</th>
+                                            <th class="text-end pe-4">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="ps-4">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="https://ui-avatars.com/api/?name=Nguyen+A&background=random" class="avatar-sm me-3">
+                                                    <div>
+                                                        <h6 class="mb-0 fw-bold">Nguyễn Khắc A</h6>
+                                                        <small class="text-muted">ID: THT-0102</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-dark text-white p-2"><i class="fa-solid fa-shield-halved me-1"></i> ByteCrafters</span></td>
+                                            <td>Java, Spring Boot, PostgreSQL</td>
+                                            <td><span class="badge bg-success-subtle text-success p-2 px-3 rounded-pill">Đã duyệt</span></td>
+                                            <td class="text-end pe-4">
+                                                <button class="btn btn-sm btn-light text-primary"><i class="fa-solid fa-pen"></i></button>
+                                                <button class="btn btn-sm btn-light text-danger"><i class="fa-solid fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="https://ui-avatars.com/api/?name=Tran+B&background=random" class="avatar-sm me-3">
+                                                    <div>
+                                                        <h6 class="mb-0 fw-bold">Trần Hải B</h6>
+                                                        <small class="text-muted">ID: THT-0155</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-dark text-white p-2"><i class="fa-solid fa-microchip me-1"></i> IoT Innovators</span></td>
+                                            <td>ESP32, C++, Firebase</td>
+                                            <td><span class="badge bg-warning-subtle text-warning p-2 px-3 rounded-pill">Chờ duyệt</span></td>
+                                            <td class="text-end pe-4">
+                                                <button class="btn btn-sm btn-light text-primary"><i class="fa-solid fa-pen"></i></button>
+                                                <button class="btn btn-sm btn-light text-danger"><i class="fa-solid fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Bảng Cố vấn -->
                         <div class="tab-pane fade" id="mentors">
-                            <table class="table table-hover mt-3">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Họ và Tên</th>
-                                        <th>Lĩnh vực hỗ trợ</th>
-                                        <th>Thông tin liên hệ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td>CV01</td><td>Phạm Văn D</td><td>Cloud Computing / DevOps</td><td>d.pham@email.com</td></tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="ps-4">Chuyên gia</th>
+                                            <th>Đơn vị công tác</th>
+                                            <th>Lĩnh vực hỗ trợ</th>
+                                            <th>Liên hệ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="ps-4">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="https://ui-avatars.com/api/?name=Le+C&background=random" class="avatar-sm me-3">
+                                                    <div>
+                                                        <h6 class="mb-0 fw-bold">Lê Minh C</h6>
+                                                        <small class="text-muted">Senior Software Engineer</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Tech Corp</td>
+                                            <td><span class="badge bg-primary p-2">System Architecture</span> <span class="badge bg-info p-2">Cloud</span></td>
+                                            <td><a href="#" class="text-decoration-none">c.leminh@email.com</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -170,84 +382,122 @@
 
         <!-- 3. ĐĂNG KÝ THAM GIA SECTION -->
         <div id="register" class="section-content">
-            <h2 class="mb-4">Đăng ký tham gia Hackathon</h2>
-            <div class="card shadow-sm border-0" style="max-width: 800px;">
-                <div class="card-body p-4">
-                    <!-- Form action đã sẵn sàng để gọi tới Endpoint (ví dụ: RegisterServlet) -->
-                    <form action="/register-endpoint" method="POST">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Họ và tên</label>
-                                <input type="text" class="form-control" name="fullName" required placeholder="Nhập họ và tên">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Email liên hệ</label>
-                                <input type="email" class="form-control" name="email" required placeholder="name@example.com">
-                            </div>
-                        </div>
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-10">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-gray-800">Đăng ký Hồ sơ Techathon</h2>
+                        <p class="text-muted">Hoàn thiện thông tin dưới đây để lưu vào hệ thống và khởi tạo Profile của bạn.</p>
+                    </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Số điện thoại</label>
-                                <input type="tel" class="form-control" name="phone" placeholder="Nhập số điện thoại">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Bạn đăng ký tham gia với tư cách gì?</label>
-                                <select class="form-select" name="role" id="roleSelect" onchange="toggleTeamInput()">
-                                    <option value="participant">Thí sinh</option>
-                                    <option value="mentor">Người cố vấn (Mentor)</option>
-                                    <option value="judge">Giám khảo</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="card">
+                        <div class="card-body p-5">
+                            <!-- JS Form Submission mô phỏng luồng chuyển hướng -->
+                            <form id="registrationForm" onsubmit="handleRegistration(event)">
+                                
+                                <h5 class="fw-bold text-primary mb-4 border-bottom pb-2">1. Thông tin cá nhân</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="fullName" placeholder="Họ và tên" required>
+                                            <label for="fullName">Họ và tên đầy đủ</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <!-- Bổ sung pattern để bắt lỗi nhập số CCCD sai định dạng -->
+                                            <input type="text" class="form-control" id="cccd" placeholder="Số CCCD" pattern="[0-9]{12}" title="Vui lòng nhập chính xác 12 chữ số" required>
+                                            <label for="cccd">Số Căn cước công dân (12 số)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                                            <label for="email">Địa chỉ Email</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="tel" class="form-control" id="phone" placeholder="Số điện thoại" required>
+                                            <label for="phone">Số điện thoại</label>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <div class="mb-3" id="teamInputGroup">
-                            <label class="form-label fw-bold">Tên nhóm (Dành cho thí sinh)</label>
-                            <input type="text" class="form-control" name="teamName" placeholder="Tên nhóm dự thi (Để trống nếu thi cá nhân)">
-                        </div>
+                                <h5 class="fw-bold text-primary mb-4 border-bottom pb-2">2. Thông tin dự thi</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="teamName" placeholder="Tên nhóm">
+                                            <label for="teamName">Tên nhóm (Hoặc để trống nếu tìm team sau)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="url" class="form-control" id="github" placeholder="Link GitHub/Portfolio">
+                                            <label for="github">Link GitHub / Portfolio cá nhân</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Mô tả kỹ năng" id="skills" style="height: 100px" required></textarea>
+                                            <label for="skills">Kỹ năng chuyên môn chính (Ví dụ: Java web dev, Fullstack, Hardware/IoT...)</label>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Kỹ năng / Chuyên môn chính</label>
-                            <textarea class="form-control" name="skills" rows="3" placeholder="Ví dụ: Java, PostgreSQL, UI/UX Design, Data Analysis..."></textarea>
+                                <div class="d-grid gap-2 mt-5">
+                                    <button type="submit" class="btn btn-primary btn-lg fw-bold" id="submitBtn">
+                                        Lưu Thông Tin & Khởi Tạo Profile
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-
-                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Gửi Đăng Ký</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Bootstrap & JS scripts -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Hàm chuyển đổi giữa các màn hình
+        // Điều hướng Tab
         function switchTab(tabId, element) {
-            // Xóa active class ở tất cả nav-links
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            // Thêm active class vào mục được click
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => link.classList.remove('active'));
             element.classList.add('active');
 
-            // Ẩn tất cả các section
             document.querySelectorAll('.section-content').forEach(section => {
                 section.classList.remove('active');
             });
-            // Hiển thị section được chọn
             document.getElementById(tabId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Hàm ẩn/hiện ô nhập Tên nhóm dựa theo Role
-        function toggleTeamInput() {
-            const role = document.getElementById('roleSelect').value;
-            const teamInput = document.getElementById('teamInputGroup');
-            if (role === 'participant') {
-                teamInput.style.display = 'block';
-            } else {
-                teamInput.style.display = 'none';
-            }
+        // Xử lý luồng đăng ký (Mô phỏng hành vi lưu data -> chuyển về Profile)
+        function handleRegistration(e) {
+            e.preventDefault(); // Ngăn form tải lại trang theo mặc định
+            
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            
+            // Đổi trạng thái nút thành Đang xử lý
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i>Đang lưu dữ liệu...';
+            btn.disabled = true;
+
+            // Giả lập thời gian server phản hồi (1.5 giây)
+            setTimeout(() => {
+                alert("Hệ thống đã lưu thông tin thành công!\n\nĐang tự động chuyển hướng bạn về Trang Profile cá nhân...");
+                
+                // Khôi phục nút (Trong thực tế dòng này có thể bỏ qua vì trang sẽ chuyển hướng)
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                document.getElementById('registrationForm').reset();
+                
+                // Trong code thực tế (sau khi lắp Backend), đây là lúc bạn redirect người dùng sang trang User Profile.
+                // Điều này dựa trên luồng chức năng bạn đã cấu hình: chuyển hướng về trang thông tin cá nhân thay vì giỏ hàng/quay lại trang đăng ký.
+                // window.location.href = "/user-profile"; 
+            }, 1500);
         }
     </script>
 </body>
